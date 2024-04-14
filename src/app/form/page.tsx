@@ -4,7 +4,7 @@ const Page = () => {
   return (
     <div>
       <h1>Welcome to the Forms Perf Example</h1>
-      <Link href="/form/step1">Go to Step 1</Link>
+      <Link href="/form/step_1">Go to Step 1</Link>
     </div>
   );
 };
