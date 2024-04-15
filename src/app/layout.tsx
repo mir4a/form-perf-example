@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { StyledEngineProvider } from "@mui/material/styles";
 import clsx from "clsx";
 import "./globals.css";
+import theme from "@/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(inter.className, "min-h-screen")}>{children}</body>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <body className={clsx(inter.className, "min-h-screen")}>
+            {children}
+          </body>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </html>
   );
 }

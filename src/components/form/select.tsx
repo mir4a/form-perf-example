@@ -20,7 +20,7 @@ export const SelectField = ({ control, name, label, options }: Props) => {
       render={({ field }) => (
         <FormControl fullWidth>
           <InputLabel id={name}>{label}</InputLabel>
-          <Select {...field} label={label} fullWidth variant="outlined">
+          <Select {...field} label={label}>
             {options.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
