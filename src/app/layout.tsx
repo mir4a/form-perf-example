@@ -21,14 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <StyledEngineProvider injectFirst>
           <CssBaseline />
           <body className={clsx(inter.className, "min-h-screen")}>
             {children}
           </body>
-        </ThemeProvider>
-      </StyledEngineProvider>
+        </StyledEngineProvider>
+      </ThemeProvider>
     </html>
   );
 }

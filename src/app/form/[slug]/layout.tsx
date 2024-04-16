@@ -24,9 +24,9 @@ const Layout = ({ params, children }: Props) => {
   };
 
   return (
-    <div className="px-10">
-      <div className="grid grid-cols-7 gap-4">
-        <div className="max-h-screen overflow-auto py-10 col-span-2 md:col-span-1">
+    <div className="grid grid-cols-7 gap-4">
+      <div className="max-h-screen overflow-auto py-10 col-span-2 md:col-span-1">
+        <div className="p-10">
           <Stepper
             activeStep={0}
             nonLinear
@@ -44,8 +44,10 @@ const Layout = ({ params, children }: Props) => {
             ))}
           </Stepper>
         </div>
-        <div className="col-span-5 md:col-span-6 max-h-screen overflow-auto py-10">
-          {children}
+      </div>
+      <div className="col-span-5 md:col-span-6 grid grid-cols-3 max-h-screen overflow-auto">
+        <div className="col-span-3 md:col-span-2">
+          <div className="p-10">{children}</div>
         </div>
       </div>
     </div>
