@@ -57,8 +57,6 @@ const Page = ({ params }: Props) => {
       <h1>Page</h1>
       <p>Slug: {params.slug}</p>
 
-      <pre>{JSON.stringify(errors, null, 2)}</pre>
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           control={control}
