@@ -1,3 +1,4 @@
+import { createContext, useContext } from "react";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -61,3 +62,19 @@ export const createFormStepStoreFactory = (id: string) =>
       )
     )
   );
+
+export type StepsStoreContextType = {
+  initStores: (steps: FormStep[]) => void;
+  stores: Record<string, any>;
+  initialized: boolean;
+};
+export const StepsStoreContext = createContext<StepsStoreContextType | null>(
+  null
+);
+export const useStepsContext = () => {
+  const context = useContext(StepsStoreContext);
+  if (!context) {
+    throw new Error("useStepsContext must be used within a StepsStoreProvider");
+  }
+  return context;
+};

@@ -8,6 +8,7 @@ import { CheckboxField } from "@/components/form/checkbox";
 import { nopeResolver } from "@hookform/resolvers/nope";
 
 import * as Nope from "nope-validator";
+import { useStepsContext } from "@/store/form";
 
 const OPTIONS = getRandomOptions(30);
 
@@ -17,6 +18,12 @@ type Props = {
   };
 };
 const Page = ({ params }: Props) => {
+  const { stores } = useStepsContext();
+
+  const store = stores[params.slug];
+  const { data } = store();
+  console.log("here is store: ", store, data);
+
   const schema2 = Nope.object().shape({
     name: Nope.string().required(),
     age: Nope.string()

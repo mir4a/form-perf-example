@@ -5,6 +5,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import { useRouter } from "next/navigation";
+import { withInitializer } from "@/components/form/withInitializer";
 
 type Props = {
   params: {
@@ -54,4 +55,4 @@ const Layout = ({ params, children }: Props) => {
   );
 };
 
-export default Layout;
+export default withInitializer(Layout);
