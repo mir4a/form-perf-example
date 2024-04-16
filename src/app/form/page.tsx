@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormInitializer } from "@/hooks/use-form-data";
-import { useStepsContext } from "@/store/form";
+import { useFormStepsStore, useStepsContext } from "@/store/form";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -24,13 +24,15 @@ const STEPS = [
 ];
 
 const Page = () => {
+  const { reset } = useFormStepsStore();
   const { initStores } = useStepsContext();
-  const { loading } = useFormInitializer();
+  const { loading, data } = useFormInitializer();
 
   useEffect(() => {
-    initStores(STEPS);
+    initStores(data);
+    reset(data.map((step) => step.id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   if (loading) {
     return (

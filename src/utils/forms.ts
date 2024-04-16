@@ -52,23 +52,51 @@ export function getSchemaForInput(name: string, type: InputType) {
   }
 }
 
-export function generateStepItemsSchema(totalItems = 125) {
+export function generateStepItems(totalItems = 125) {
   const types: InputType[] = ["text", "number", "select", "checkbox"];
-  const result = {};
+  const schema = {};
+  const data = {};
 
   for (let i = 0; i < totalItems; i++) {
     const type = faker.helpers.arrayElement(types);
     const name = faker.word.noun();
+    let defaultValue;
+    switch (type) {
+      case "checkbox":
+        defaultValue = false;
+        break;
+      case "number":
+        defaultValue = String(faker.number.int({ min: 0, max: 100 }));
+        break;
+      case "select":
+        defaultValue = "";
+        break;
+      case "text":
+        defaultValue = faker.lorem.words();
+        break;
+      default:
+        break;
+    }
 
-    Object.assign(result, getSchemaForInput(name, type));
+    data[name] = {
+      type,
+      value: defaultValue,
+    };
+
+    Object.assign(schema, getSchemaForInput(name, type));
   }
 
-  return result;
+  return { schema: object().shape(schema), data };
 }
 
-// export function generateStepSchema(totalStepItems = 125) {
-//   return object({
-//     slug: string(),
-//     items: object(generateStepItemsSchema(totalStepItems)),
-//   });
-// }
+export function generateSteps(totalSteps = 50) {
+  return Array.from({ length: totalSteps }, (_, i) => {
+    const { schema, data } = generateStepItems();
+    return {
+      id: `step_${i + 1}`,
+      title: `Step ${i + 1}`,
+      schema,
+      data,
+    };
+  });
+}

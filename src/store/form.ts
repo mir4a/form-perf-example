@@ -42,19 +42,19 @@ export const useFormStepsStore = create<FormState>()(
 );
 
 export interface FormStepState {
-  data: Record<string, any>[];
+  data: Record<string, any>;
   schema: Record<string, any>;
   setData: (data: Record<string, any>) => void;
   reset: () => void;
 }
 
-export const createFormStepStoreFactory = (id: string) =>
+export const createFormStepStoreFactory = (id: string, initData: any) =>
   create<FormStepState>()(
     devtools(
       persist(
         (set) => ({
-          data: [],
-          schema: {},
+          data: { ...initData.data },
+          schema: { ...initData.schema },
           setData: (data) => set({ ...data }),
           reset: () => set({ data: [] }),
         }),
@@ -64,7 +64,7 @@ export const createFormStepStoreFactory = (id: string) =>
   );
 
 export type StepsStoreContextType = {
-  initStores: (steps: FormStep[]) => void;
+  initStores: (steps: any) => void;
   stores: Record<string, any>;
   initialized: boolean;
 };

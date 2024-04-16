@@ -15,7 +15,7 @@ export default function FormLayout({
       value={{
         initStores: (steps) => {
           steps.forEach((step) => {
-            const store = createFormStepStoreFactory(step.id);
+            const store = createFormStepStoreFactory(step.id, step);
             setStores((prev) => ({ ...prev, [step.id]: store }));
             setInitialized(true);
           });

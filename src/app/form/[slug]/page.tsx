@@ -9,6 +9,8 @@ import { nopeResolver } from "@hookform/resolvers/nope";
 
 import * as Nope from "nope-validator";
 import { useStepsContext } from "@/store/form";
+import { Fragment } from "react";
+import Button from "@mui/material/Button";
 
 const OPTIONS = getRandomOptions(30);
 
@@ -21,38 +23,60 @@ const Page = ({ params }: Props) => {
   const { stores } = useStepsContext();
 
   const store = stores[params.slug];
-  const { data } = store();
-  console.log("here is store: ", store, data);
+  const { data, schema, setData } = store();
 
-  const schema2 = Nope.object().shape({
-    name: Nope.string().required(),
-    age: Nope.string()
-      .test((value) => {
-        if (value && value.trim()) {
-          if (isNaN(+value)) {
-            return "This field must be a number";
-          }
+  const defaultValues = Object.keys(data).reduce((acc, key) => {
+    console.log("key: ", key);
+    acc[key] = data[key].value;
+    return acc;
+  }, {});
 
-          return;
-        }
-        return "This field is required";
-      })
-      .required(),
-    select: Nope.string().required(),
-    checkbox: Nope.boolean().required(),
-  });
+  function renderInput(
+    name: string,
+    type: string,
+    control: any,
+    error?: string
+  ) {
+    switch (type) {
+      case "text":
+        return (
+          <TextInput control={control} name={name} label={name} error={error} />
+        );
+      case "checkbox":
+        return (
+          <div>
+            <CheckboxField
+              control={control}
+              name={name}
+              label={name}
+              error={error}
+            />
+          </div>
+        );
+      case "select":
+        return (
+          <SelectField
+            control={control}
+            name={name}
+            label={name}
+            options={getRandomOptions(30)}
+            error={error}
+          />
+        );
+      default:
+        return (
+          <TextInput control={control} name={name} label={name} error={error} />
+        );
+    }
+  }
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: nopeResolver(schema2),
-    defaultValues: {
-      name: "John Doe",
-      age: "",
-      checkbox: undefined,
-      select: "",
-    },
+    resolver: nopeResolver(schema),
+    defaultValues,
   });
 
   const onSubmit = (data: any) => {
@@ -65,32 +89,17 @@ const Page = ({ params }: Props) => {
       <p>Slug: {params.slug}</p>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextInput
-          control={control}
-          name="name"
-          label="Name"
-          error={errors.name?.message}
-        />
-        <TextInput
-          control={control}
-          name="age"
-          label="Age"
-          error={errors.age?.message}
-        />
-        <CheckboxField
-          control={control}
-          error={errors.checkbox?.message}
-          name="checkbox"
-          label="Checkbox"
-        />
-        <SelectField
-          control={control}
-          name="select"
-          label="Select"
-          options={OPTIONS}
-          error={errors.select?.message}
-        />
-        <button type="submit">Submit</button>
+        {Object.keys(data).map((key) => {
+          const { type } = data[key];
+          return (
+            <Fragment key={key}>
+              {renderInput(key, type, control, errors[key]?.message)}
+            </Fragment>
+          );
+        })}
+        <Button variant="contained" type="submit">
+          Submit
+        </Button>
       </form>
     </div>
   );
