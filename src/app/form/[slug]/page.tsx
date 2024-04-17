@@ -1,7 +1,7 @@
 "use client";
 
 import { SelectField } from "@/components/form/select";
-import { getRandomOptions } from "@/utils/forms";
+import { getRandomOptions, getSchemaForInput } from "@/utils/forms";
 import { useForm } from "react-hook-form";
 import { TextInput } from "@/components/form/input";
 import { CheckboxField } from "@/components/form/checkbox";
@@ -23,13 +23,20 @@ const Page = ({ params }: Props) => {
   const { stores } = useStepsContext();
 
   const store = stores[params.slug];
-  const { data, schema, setData } = store();
+  const { data, setData } = store();
 
   const defaultValues = Object.keys(data).reduce((acc, key) => {
-    console.log("key: ", key);
     acc[key] = data[key].value;
     return acc;
   }, {});
+  const schemaShape = Object.keys(data).reduce((acc, key) => {
+    const type = data[key].type;
+    acc[key] = getSchemaForInput(key, type);
+    return acc;
+  }, {});
+
+  const schema = Nope.object().shape(schemaShape);
+  console.log(schema);
 
   function renderInput(
     name: string,
@@ -75,7 +82,7 @@ const Page = ({ params }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: nopeResolver(schema),
+    resolver: nopeResolver(schema, { abortEarly: true }),
     defaultValues,
   });
 

@@ -86,7 +86,7 @@ export function generateStepItems(totalItems = 125) {
     Object.assign(schema, getSchemaForInput(name, type));
   }
 
-  return { schema: object().shape(schema), data };
+  return { schema: object().shape({ ...schema }), data };
 }
 
 export function generateSteps(totalSteps = 50) {
