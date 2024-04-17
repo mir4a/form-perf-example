@@ -1,4 +1,32 @@
+## About
+
+### Iterations
+
+#### Iteration 1: Get the list of steps with form fields schema, store it on client, update on each step and send client's data on the final step
+
+The idea is to get all the form fields initial data on the parent route and store it so that it can be accessed by each step route. Each step is responsible to store user's input data and validate it. Then the final step will itereate over all steps stores and send the whole data to the server.
+
+The first iteration is based on assumption that the form could be divided into separate steps and each step has it's own route. Initialization and gathering (mocked fetcing) form fields is done at the parent route. During this process, the form fields data is placed into separate stores: one for steps basic info (steps list of ids and list of completed steps) and steps data with form fields divided into per step store. Once the states are initialized, then the next link is rendered which follows to the first step. Each step route handles the validation schema initialization from the step store and renders the form fields.
+
+#### Iteration 2: Get the list of steps ids. Fetch form fields schema for each step on demand and store it on client. Update on each step and send client's data on the final step
+
+TBD
+
+#### Iteration 3: Same as Iteration 2, but send to the server step data on each step (funneling)
+
+TBD
+
+
+
+## Tech Stack
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Material-UI](https://material-ui.com/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Nope-validator](https://github.com/ftonato/nope-validator)
+- [Zustand](https://github.com/pmndrs/zustand/)
 
 ## Getting Started
 
